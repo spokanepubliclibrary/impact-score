@@ -1,0 +1,55 @@
+# ── Secrets ──────────────────────────────────────────────────────────────────
+# .env is mounted at runtime via docker-compose. It must never be baked in.
+.env
+.env.*
+!.env.example
+
+# ── Build/orchestration files that have no place in the web image ────────────
+db/
+scripts/
+Makefile
+README.md
+deployment_decisions.md
+application_modernization_prompt*.md
+Functional_changes.md
+docker-compose.yml
+docker-compose.override.yml
+cleanup_pass*.sh
+
+# ── Git + CI ─────────────────────────────────────────────────────────────────
+.git/
+.gitignore
+.gitattributes
+.github/
+
+# ── Composer dev tree (multi-stage build produces a clean vendor/) ───────────
+# vendor/ is built inside the builder stage; the host's tree (if any) must not
+# leak into the build context.
+vendor/
+
+# ── Runtime artifacts ────────────────────────────────────────────────────────
+logs/
+uploads/
+backup/
+db/backups/
+*.log
+error_log*.txt
+
+# ── macOS / virtiofs bind-mount placeholder (Pass 8) ─────────────────────────
+# Empty file used to create an inode the dev override can bind .env over.
+# Not needed inside the image.
+.env.placeholder
+
+# ── Editor + OS noise ────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ── Stale working copies (defensive — should be deleted by Pass 1) ───────────
+* copy.php
+* copy 2.php
+* DRAFT.php
+iisstart.htm

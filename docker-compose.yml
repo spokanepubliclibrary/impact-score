@@ -1,0 +1,78 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Impact Score Dashboard — base compose (production / versioned release)
+#
+# This file is what CI/CD and end-users invoke. It contains:
+#   - NO source bind-mounts (the image is self-contained)
+#   - NO build: directives (builds happen via Makefile / registry pulls)
+#   - NO phpMyAdmin (dev-only — see docker-compose.override.yml)
+#   - NO host-published DB port (security; dev override exposes it locally)
+#
+# Spec deviations (vs. Functional_changes.md §5) — intentional, per Pass 4a:
+#   - Dropped `3307:3306` from db (use `make db-shell` or the dev override)
+#   - Dropped `--default-authentication-plugin=mysql_native_password`
+#     (let MySQL 8 use modern caching_sha2_password)
+#   - phpMyAdmin moved to override (no DB admin UI exposed in prod)
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+  web:
+    image: impact-score:latest
+    container_name: impact_web
+    ports:
+      - "8080:80"
+    environment:
+      APP_ENV:               ${APP_ENV:-production}
+      APP_DEBUG:             ${APP_DEBUG:-false}
+      DB_HOST:               ${DB_HOST:-db}
+      DB_NAME:               ${DB_NAME:-impact_score}
+      DB_USER:               ${DB_USER:-impact_user}
+      DB_PASSWORD:           ${DB_PASSWORD:-changeme}
+      BOOTSTRAP_ADMIN_TOKEN: ${BOOTSTRAP_ADMIN_TOKEN:-change-this-secret-token}
+      SESSION_SECURE_ONLY:   ${SESSION_SECURE_ONLY:-false}
+      OUTLOOK_HOST:          ${OUTLOOK_HOST:-}
+      OUTLOOK_PORT:          ${OUTLOOK_PORT:-}
+      OUTLOOK_USERNAME:      ${OUTLOOK_USERNAME:-}
+      OUTLOOK_PASSWORD:      ${OUTLOOK_PASSWORD:-}
+      OUTLOOK_FROM_ADDRESS:  ${OUTLOOK_FROM_ADDRESS:-}
+      OUTLOOK_FROM_NAME:     ${OUTLOOK_FROM_NAME:-}
+    volumes:
+      # .env mounted so the PHP secret preflight (Pass 4c) can read it directly.
+      # The mount target file must already exist in the image (see Dockerfile).
+      - ./.env:/var/www/html/.env:ro
+      # Logs survive container replacement. Production deployments may swap
+      # this for a Docker log driver routed to a central log system.
+      - ./logs:/var/www/html/logs
+      # User-uploaded program photos / reports persist on a named volume.
+      - uploads:/var/www/html/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost/ >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    restart: unless-stopped
+
+  db:
+    image: impact-score-db:latest
+    container_name: impact_db
+    environment:
+      MYSQL_DATABASE:      ${DB_NAME:-impact_score}
+      MYSQL_USER:          ${DB_USER:-impact_user}
+      MYSQL_PASSWORD:      ${DB_PASSWORD:-changeme}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-changeme_root}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u\"$${MYSQL_USER}\" -p\"$${MYSQL_PASSWORD}\" --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+    restart: unless-stopped
+
+volumes:
+  db_data:
+  uploads:

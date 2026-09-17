@@ -1,0 +1,35 @@
+.PHONY: build push deploy clean
+
+# Build production images
+build:
+	docker build -t impact-score:latest .
+	docker build -t impact-score-db:latest db/
+
+# Tag and push to registry (requires REGISTRY, IMAGE_NAMESPACE, IMAGE_TAG env vars)
+push: build
+	docker tag impact-score:latest ${REGISTRY}/${IMAGE_NAMESPACE}/impact-score:${IMAGE_TAG}
+	docker tag impact-score-db:latest ${REGISTRY}/${IMAGE_NAMESPACE}/impact-score-db:${IMAGE_TAG}
+	docker push ${REGISTRY}/${IMAGE_NAMESPACE}/impact-score:${IMAGE_TAG}
+	docker push ${REGISTRY}/${IMAGE_NAMESPACE}/impact-score-db:${IMAGE_TAG}
+	docker tag ${REGISTRY}/${IMAGE_NAMESPACE}/impact-score:${IMAGE_TAG} ${REGISTRY}/${IMAGE_NAMESPACE}/impact-score:latest
+	docker tag ${REGISTRY}/${IMAGE_NAMESPACE}/impact-score-db:${IMAGE_TAG} ${REGISTRY}/${IMAGE_NAMESPACE}/impact-score-db:latest
+	docker push ${REGISTRY}/${IMAGE_NAMESPACE}/impact-score:latest
+	docker push ${REGISTRY}/${IMAGE_NAMESPACE}/impact-score-db:latest
+
+# Deploy: pull images and start containers
+deploy:
+	docker compose --env-file .env.production pull
+	docker compose --env-file .env.production up -d
+
+# Stop containers
+stop:
+	docker compose down
+
+# View logs
+logs:
+	docker compose logs -f
+
+# Clean up (warning: deletes volumes)
+clean:
+	docker compose down -v
+	docker system prune -f

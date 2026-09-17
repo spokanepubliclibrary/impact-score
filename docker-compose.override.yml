@@ -1,0 +1,50 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Development overrides — auto-merged by `docker compose up` / `make up`.
+#
+# Anything dev-only goes here:
+#   - bind-mounts of local source for live editing
+#   - host-published DB port for connecting with a desktop client
+#   - phpMyAdmin admin UI
+#
+# End users running a versioned release pull only docker-compose.yml and never
+# see this file, so the production stack stays clean.
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+  web:
+    # Allow `docker compose up --build` from a clone without pre-running `make build`.
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      APP_ENV: development
+    volumes:
+      # Live-edit the application: changes to PHP files are visible without rebuild.
+      - .:/var/www/html
+      # Keep the Docker shim for credentials in place even when the rest of the
+      # tree is bind-mounted from the host.
+      - ./docker/db_connection.php:/var/www/html/secure/db_connection.php:ro
+
+  db:
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    # Local clients (TablePlus, DBeaver, etc.) can connect on host port 3307.
+    # Not exposed in the base compose for production.
+    ports:
+      - "3307:3306"
+
+  phpmyadmin:
+    image: phpmyadmin:5.2
+    container_name: impact_pma
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER:     ${DB_USER:-impact_user}
+      PMA_PASSWORD: ${DB_PASSWORD:-changeme}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped

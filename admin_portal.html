@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<!--
+  Admin Portal - Impact Score Dashboard
+  This page serves as the main entry point for administrative functions.
+  It provides quick access to managing scoring questions, users, configuring forms, and accessing the API UI.
+  Each card represents a separate area of management.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal - Impact Score Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Basic page styling */
+    body {
+      font-family: 'Montserrat', Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+    .container {
+      margin-top: 50px;
+    }
+    /* Card animations */
+    .card {
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: scale(1.05);
+    }
+    /* Custom button styling updated to custom palette */
+    .btn-custom {
+      background-color: #480d3c; /* Deep Plum */
+      color: white;
+    }
+    .btn-custom:hover {
+      background-color: #bb1b51; /* Fuchsia */
+    }
+  </style>
+</head>
+<body>
+  <div class="container text-center">
+    <!-- Header Section -->
+    <h1 class="mb-4">⚙️ Admin Portal</h1>
+    <p class="lead">Manage scoring questions, users, configurations, and API access.</p>
+    
+    <!-- Main Navigation Cards -->
+    <div class="row justify-content-center">
+      
+      <!-- Card: Manage Scoring Questions -->
+      <div class="col-md-4 mb-4">
+        <div class="card p-4 shadow-sm">
+          <h4>📝 Manage Scoring Questions</h4>
+          <p>Add, edit, or remove scoring questions.</p>
+          <a href="admin_panel.php" class="btn btn-custom">Manage Questions</a>
+        </div>
+      </div>
+
+      <!-- Card: Add/Remove Users -->
+      <div class="col-md-4 mb-4">
+        <div class="card p-4 shadow-sm">
+          <h4>👥 Add/Remove Users</h4>
+          <p>Manage user and team names.</p>
+          <a href="admin_users.php" class="btn btn-custom">Manage Users</a>
+        </div>
+      </div>
+
+      <!-- Card: Configure Forms -->
+      <div class="col-md-4 mb-4">
+        <div class="card p-4 shadow-sm">
+          <h4>🛠 Configure Forms</h4>
+          <p>Create or customize the forms.</p>
+          <a href="admin_forms.php" class="btn btn-custom">Configure Forms</a>
+        </div>
+      </div>
+
+      <!-- Card: API Access -->
+      <div class="col-md-4 mb-4">
+        <div class="card p-4 shadow-sm">
+          <h4>🔗 API Access</h4>
+          <p>Test or connect with the Impact Score API.</p>
+          <a href="api-docs/api.html" class="btn btn-custom">Open API UI</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>

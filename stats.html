@@ -1,0 +1,164 @@
+<!--
+  Impact Score Reports Landing Page
+
+  This page serves as the central hub for accessing various impact score reports
+  within the application. It presents a clean, responsive interface with Bootstrap 5,
+  allowing users to choose from multiple types of reports, including programming,
+  control charts, and comparison reports.
+
+  Features:
+  - Uses Bootstrap for layout and styling
+  - Custom button and color themes for branding consistency
+  - Four distinct report access cards with icons and descriptions
+  - Includes navigation back to the dashboard
+
+  @package ImpactScoreReports
+  @version 1.0
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Impact Score Reports</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+        background-color: #f5f2ec; /* Parchment */
+        font-family: 'Montserrat', Arial, sans-serif;
+    }
+    .container {
+        margin-top: 50px;
+    }
+    .card {
+        transition: transform 0.2s;
+    }
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+    /* Custom button styling for consistency */
+    .btn-custom {
+        background-color: #480d3c; /* Deep Plum */
+        color: #fff;
+        border: none;
+    }
+    .btn-custom:hover {
+        background-color: #bb1b51; /* Fuchsia */
+        color: #fff;
+    }
+
+    /* Override Bootstrap secondary button */
+    .btn-secondary {
+        background-color: #480d3c;
+        color: #fff;
+        border: none;
+    }
+    .btn-secondary:hover {
+        background-color: #bb1b51;
+        color: #fff;
+    }
+
+    /* Optional: Consistent theme overrides for other Bootstrap button variants */
+    .btn-primary,
+    .btn-success,
+    .btn-info,
+    .btn-danger {
+        background-color: #480d3c;
+        border-color: #480d3c;
+    }
+    .btn-primary:hover,
+    .btn-success:hover,
+    .btn-info:hover,
+    .btn-danger:hover {
+        background-color: #bb1b51;
+        border-color: #bb1b51;
+    }
+    .btn-info,
+    .btn-info:hover {
+        color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Back to Admin Panel Button -->
+  <div style="margin-bottom: 20px;">
+    <a href="index.php" class="btn btn-secondary">⬅️ Back to Dashboard</a>
+  </div>
+
+  <div class="container text-center">
+    <h1 class="mb-4">📊 Reports</h1>
+    <p class="lead">Select a report to view detailed analytics.</p>
+
+    <div class="row g-4">
+      <!-- Programming Report -->
+      <div class="col-md-6">
+        <div class="card p-4 shadow-sm">
+          <h4>📅 Programming Report</h4>
+          <p>View a detailed breakdown of program statistics.</p>
+          <a href="report.php" class="btn btn-custom">View Programming Report</a>
+        </div>
+      </div>
+
+      <!-- Control Chart Report -->
+      <div class="col-md-6">
+        <div class="card p-4 shadow-sm">
+          <h4>📈 Control Chart Report</h4>
+          <p>Analyze impact score trends with a control chart.</p>
+          <a href="control_chart_report.php" class="btn btn-custom">View Control Chart</a>
+        </div>
+      </div>
+
+      <!-- Work-in-Progress Report -->
+<div class="col-md-6">
+  <div class="card p-4 shadow-sm">
+    <h4>*New* Programming Report</h4>
+    <p>Create draft reports with highlights, photos, and stats.</p>
+    <a href="report2.php" class="btn btn-custom">Open New Programming Report</a>
+  </div>
+</div>
+
+      <!-- Super Ad-Hoc Impact Report -->
+  <div class="col-md-6">
+    <div class="card p-4 shadow-sm">
+      <h4>🛠️ Super Ad-Hoc Impact Report</h4>
+      <p>Build custom, flexible reports with raw-score mode, control lines, and CSV export.</p>
+      <a href="ad_hoc_report.php" class="btn btn-custom">Open Super Ad-Hoc Report</a>
+    </div>
+  </div>
+
+      <!-- Compare Report -->
+      <div class="col-md-6">
+        <div class="card p-4 shadow-sm">
+          <h4>🔍 Compare Report</h4>
+          <p>Examine and contrast various impact scores side by side.</p>
+          <a href="compare_report.php" class="btn btn-custom">View Compare Report</a>
+        </div>
+      </div>
+
+      <!-- Experimental Compare Report -->
+      <div class="col-md-6">
+        <div class="card p-4 shadow-sm">
+          <h4>🧩 Compare Report (Experimental)</h4>
+          <p>Untested version of Compare Report with direct email functionality.</p>
+          <a href="compare_report_exp.php" class="btn btn-custom">View Compare Report Exp</a>
+        </div>
+      </div>
+
+      <!-- Tag Usage Report -->
+      <div class="col-md-6">
+        <div class="card p-4 shadow-sm">
+          <h4>🏷️ Tag Usage Report</h4>
+          <p>See how many times each program tag has been used, filtered by team and date.</p>
+          <a href="tag_report.php" class="btn btn-custom">View Tag Report</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

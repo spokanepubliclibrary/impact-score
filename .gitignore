@@ -1,0 +1,52 @@
+# ── Secrets ───────────────────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+secure/db_connection.local.php
+
+# ── PHP / Composer ────────────────────────────────────────────────────────────
+vendor/
+composer.phar
+*.phar
+
+# ── Runtime artifacts ─────────────────────────────────────────────────────────
+# Application + PHP error logs. Directory itself is kept via logs/.gitkeep.
+logs/*
+!logs/.gitkeep
+error_log.txt
+error_log*.txt
+php-errors.log
+php_errors.log
+
+# ── Uploaded user content ─────────────────────────────────────────────────────
+# Stored on a docker named volume in production; never tracked in git.
+uploads/*
+!uploads/.gitkeep
+
+# ── Database dumps / backups ──────────────────────────────────────────────────
+db/backups/
+*.sql.gz
+backup/
+
+# ── Editor + OS noise ─────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*.bak
+*.orig
+*~
+
+# ── Stale working copies (re-prevent the pattern that Pass 1 cleaned up) ─────
+* copy.php
+* copy 2.php
+* DRAFT.php
+
+# ── Build / CI scratch ────────────────────────────────────────────────────────
+.cache/
+.phpunit.cache/
+coverage/
+.env.production
+# Keep db/init.sql as the source of truth

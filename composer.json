@@ -1,0 +1,21 @@
+{
+    "name": "spokane-library/impact-score",
+    "description": "Impact Score Dashboard — community-engagement program scoring",
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": ">=8.1",
+        "ext-mysqli": "*",
+        "phpmailer/phpmailer": "^6.9"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true,
+        "platform": {
+            "php": "8.2"
+        }
+    },
+    "autoload": {
+        "psr-4": {}
+    }
+}
